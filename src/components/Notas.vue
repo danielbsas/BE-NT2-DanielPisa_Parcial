@@ -15,6 +15,7 @@
             v-model.trim="formData.nombre"
             autocomplete="off"
             required
+            no-espacios
             :minlength="nombreMinLength"
             :maxlength="nombreMaxLength"
           />
@@ -27,6 +28,9 @@
             <div slot="minlength" class="alert alert-danger mt-1">
               Este campo requiere entre {{ nombreMinLength }} y
               {{ nombreMaxLength }} caracteres.
+            </div>
+            <div slot="no-espacios" class="alert alert-danger mt-1">
+              No se permiten espacios intermedios en este campo.
             </div>
           </field-messages>
         </validate>
@@ -43,6 +47,7 @@
             v-model.trim="formData.apellido"
             autocomplete="off"
             required
+            no-espacios
             :minlength="nombreMinLength"
             :maxlength="nombreMaxLength"
           />
@@ -55,6 +60,9 @@
             <div slot="minlength" class="alert alert-danger mt-1">
               Este campo requiere entre {{ nombreMinLength }} y
               {{ nombreMaxLength }} caracteres.
+            </div>
+            <div slot="no-espacios" class="alert alert-danger mt-1">
+              No se permiten espacios intermedios en este campo.
             </div>
           </field-messages>
         </validate>
@@ -165,7 +173,6 @@
           color : "black",
           backgroundColor : nota >= 7 ? "green" : nota >= 4 ? "yellow" : "red"
         }
-
     },
 
     
@@ -173,10 +180,13 @@
     computed: {
     getPromedio() {
         let cant = this.registros.length
-        let suma = 0
-        this.registros.forEach(registro => { suma += registro.nota })
-        
-        return  cant > 0 ? suma / cant : 0
+        let promedio = 0;
+        this.registros.forEach(registro => { promedio += Number(registro.nota) })
+        if (cant == 0) {
+          promedio = 0;
+        }
+
+        return promedio / cant
 
 
         
